@@ -1,0 +1,13 @@
+.chatbox-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.chatbox {
+  width: 600px;
+  border: 1px solid;
+  border-radius: 1rem;
+  overflow: hidden;
+}

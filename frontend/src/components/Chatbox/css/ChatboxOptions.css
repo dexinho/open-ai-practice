@@ -1,0 +1,32 @@
+.chatbox-selection-dialog {
+  inset: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1rem;
+}
+
+.chatbox-options-holder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chatbox-options-button-holder {
+  padding: 0.4rem;
+  background-color: rgba(0, 0, 0, .2);
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.chatbox-options-button-holder:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+}
+
+.chatbox-options-holder>* {
+  width: 200px;
+  padding: 0.2rem;
+  font-size: 1.2rem;
+  height: 50px;
+}
