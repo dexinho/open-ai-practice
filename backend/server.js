@@ -12,9 +12,9 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/open-ai", async (req, res) => {
-  const { content } = req.body;
+  const { systemContent, userContent } = req.body;
 
-  const response = await main(content);
+  const response = await main({ systemContent, userContent });
 
   res.status(200).send(response);
 });
@@ -25,14 +25,19 @@ const openai = new OpenAI({
   apiKey: process.env["OPENAI_API_KEY"],
 });
 
-async function main(content) {
+async function main({ systemContent, userContent }) {
+  console.log(systemContent, userContent);
   const chatCompletion = await openai.chat.completions.create({
     messages: [
       {
         role: "system",
-        content: "Your name is Rambo Amadeus and you are pirate!",
+        content: `${
+          systemContent.username ? `My name is ${systemContent.username}` : ""
+        }, you are ${
+          systemContent.chatboxStyle
+        }, answer every questions in this style!`,
       },
-      { role: "user", content },
+      { role: "user", content: userContent },
     ],
     model: "gpt-3.5-turbo",
     temperature: 0.7,
