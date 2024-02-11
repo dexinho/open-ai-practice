@@ -1,43 +1,56 @@
 import React, { useState } from "react";
+import { ChatboxInput } from "./ChatboxInput";
+import { ChatboxWindow } from "./ChatboxWindow";
+import { ChatboxOptions } from "./ChatboxOptions";
+import { fetchContent } from "../../utility/fetchContent";
+import "../../index.css";
+import "../Chatbox/css/Chatbox.css";
 
 export const Chatbox = () => {
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [chatbotOptions, setChatbotOptions] = useState({
+    username: "",
+    chatboxStyle: "default",
+  });
 
-  const handleInputChange = (e) => setInput(e.target.value);
-
-  const handleFetchResponse = async () => {
+  const handleInputSend = async (input) => {
     if (isLoading) return;
+
+    const userMessage = { role: "user", content: input }
+    setChatMessages((prevM) => [...prevM, userMessage]);
 
     try {
       setIsLoading(true);
-
-      const fetchResponse = await fetch(`http://localhost:3000/open-ai`, {
-        method: "POST",
-        body: JSON.stringify({content: input}),
-        headers: {
-          "Content-Type": "application/json",
-        }
+      const content = await fetchContent({
+        userContent: input,
+        systemContent: chatbotOptions,
       });
 
-      if (fetchResponse.ok) {
-        const fetchedData = await fetchResponse.json();
+      console.log(content)
 
-        setOutput(fetchedData.content)
-      }
+      const systemMessage = { role: "system", content }
+      setChatMessages((prevM) => [...prevM, systemMessage]);
     } catch (err) {
-      console.log(err);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleSelectionSave = ({ username, chatboxStyle }) => {
+    setChatbotOptions({
+      username,
+      chatboxStyle,
+    });
+  };
+
   return (
-    <div>
-      <input type="text" onChange={handleInputChange} value={input} />
-      <button onClick={handleFetchResponse}>SEND</button>
-      <div>{output}</div>
+    <div className="chatbox-container">
+      <div className="chatbox">
+        <ChatboxOptions onSelectionSave={handleSelectionSave} />
+        <ChatboxWindow messages={chatMessages} isLoading={isLoading} />
+        <ChatboxInput onInputSend={handleInputSend} />
+      </div>
     </div>
   );
 };
