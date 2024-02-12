@@ -17,6 +17,30 @@
   background-color: rgba(0, 0, 0, .2);
   cursor: pointer;
   font-size: 1.5rem;
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
+}
+
+.chatbox-options-button-holder > *:nth-child(1){
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+.chatbox-options-button-holder > *:nth-child(2){
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.chatbox-options-button-holder > *:nth-child(3){
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 .chatbox-options-button-holder:hover {

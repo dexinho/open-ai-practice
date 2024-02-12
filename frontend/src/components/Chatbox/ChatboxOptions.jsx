@@ -6,7 +6,7 @@ import "../Chatbox/css/ChatboxOptions.css";
 
 export const ChatboxOptions = ({ onSelectionSave }) => {
   const [chatboxStyle, setChatboxStyle] = useState("default");
-  const [usernameInput, setUsernameInput] = useState("");
+  const [usernameInput, setUsernameInput] = useState("user");
   const [isChatboxDialogOpen, setIsChatboxDialogOpen] = useState(false);
   const [isCustomSelected, setIsCustomSelected] = useState(false);
   const chatboxDialogRef = useRef(null);
@@ -65,7 +65,9 @@ export const ChatboxOptions = ({ onSelectionSave }) => {
         className="chatbox-options-button-holder"
         onClick={handleChatboxSettings}
       >
+        <div>{usernameInput}</div>
         <FontAwesomeIcon icon={faGear} />
+        <div>{chatboxStyle}</div>
       </div>
       <dialog
         ref={chatboxDialogRef}
