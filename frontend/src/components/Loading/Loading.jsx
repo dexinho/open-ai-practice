@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import "../../index.css";
 import "../Chatbox/css/Loading.css";
 
 export const Loading = () => {
