@@ -1,18 +1,26 @@
 import React, { useRef, useState } from "react";
 import "../../index.css";
 import "../Chatbox/css/ChatboxInput.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 export const ChatboxInput = ({ onInputSend }) => {
   const [textArea, setTextArea] = useState("");
-  const inputRef = useRef(null);
+  const textAreaRef = useRef(null);
 
-  const handleInputChange = (e) => setTextArea(e.target.value);
+  const handleInputChange = (e) => {
+    setTextArea(e.target.value);
+  };
   const handleInputSend = (e) => {
-    if (e.key === "Enter" || e.target.textContent === "SEND") {
+    if (
+      (e.key === "Enter" || e.target.classList.contains("fa-paper-plane")) &&
+      textArea.trim()
+    ) {
+      e.preventDefault();
       setTextArea("");
-      onInputSend(textArea);
+      onInputSend(textArea.trim());
 
-      inputRef.current.focus();
+      textAreaRef.current.focus();
     }
   };
 
@@ -20,16 +28,16 @@ export const ChatboxInput = ({ onInputSend }) => {
     <div className="chatbox-input-holder">
       <textarea
         className="chatbox-textarea"
-        ref={inputRef}
+        ref={textAreaRef}
         type="text"
         onChange={handleInputChange}
         value={textArea}
         onKeyDown={handleInputSend}
         rows={1}
         cols={1}
-      />
+      ></textarea>
       <button className="chatbox-button" onClick={handleInputSend}>
-        SEND
+        <FontAwesomeIcon icon={faPaperPlane} />
       </button>
     </div>
   );
