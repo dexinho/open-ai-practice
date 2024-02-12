@@ -12,9 +12,9 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/open-ai", async (req, res) => {
-  const { systemContent, userContent } = req.body;
+  const { systemContent, userContent, messagesHistory } = req.body;
 
-  const response = await main({ systemContent, userContent });
+  const response = await main({ systemContent, userContent, messagesHistory });
 
   res.status(200).send(response);
 });
@@ -25,17 +25,29 @@ const openai = new OpenAI({
   apiKey: process.env["OPENAI_API_KEY"],
 });
 
-async function main({ systemContent, userContent }) {
-  console.log(systemContent, userContent);
+async function main({ systemContent, userContent, messagesHistory }) {
+  const systemMessageContent = `${
+    systemContent.username
+      ? `My absolute name is ${systemContent.username} and always start the sentence with my name mentioned, `
+      : ""
+  }you are absolutely ${
+    systemContent.chatboxStyle
+  }, answer every questions in this style! Don't mix up my name with previous history chats because my real name is at the start of the sentence! Our previous messages are: ${messagesHistory.map(
+    (message) =>
+      `${
+        message.role === "system"
+          ? " Your message: " + message.content
+          : " My message: " + message.content
+      }`
+  )}`;
+
+  console.log(systemMessageContent);
+  console.log('-----------------');
   const chatCompletion = await openai.chat.completions.create({
     messages: [
       {
         role: "system",
-        content: `${
-          systemContent.username ? `My name is ${systemContent.username}` : ""
-        }, you are ${
-          systemContent.chatboxStyle
-        }, answer every questions in this style!`,
+        content: systemMessageContent,
       },
       { role: "user", content: userContent },
     ],
