@@ -28,11 +28,11 @@ const openai = new OpenAI({
 async function main({ systemContent, userContent, messagesHistory }) {
   const systemMessageContent = `${
     systemContent.username
-      ? `My absolute name is ${systemContent.username} and always start the sentence with my name mentioned, `
+      ? `My name is "${systemContent.username}" and always start the sentence with my name mentioned. `
       : ""
-  }you are absolutely ${
+  }Your identity is being "${
     systemContent.chatboxStyle
-  }, answer every questions in this style! Don't mix up my name with previous history chats because my real name is at the start of the sentence! Our previous messages are: ${messagesHistory.map(
+  }" and be creative with your name to match this identity! Don't ever forget this during our conversation! Answer every questions within your identity! Don't mix up my name with your name or with previous history chats because my real name is only at the start of the sentence! Our previous messages are: ${messagesHistory.map(
     (message) =>
       `${
         message.role === "system"
