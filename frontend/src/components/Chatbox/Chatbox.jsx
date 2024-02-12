@@ -25,9 +25,8 @@ export const Chatbox = () => {
       const content = await fetchContent({
         userContent: input,
         systemContent: chatbotOptions,
+        messagesHistory: chatMessages,
       });
-
-      console.log(content)
 
       const systemMessage = { role: "system", content }
       setChatMessages((prevM) => [...prevM, systemMessage]);
@@ -38,6 +37,7 @@ export const Chatbox = () => {
   };
 
   const handleSelectionSave = ({ username, chatboxStyle }) => {
+    console.log(username, chatboxStyle)
     setChatbotOptions({
       username,
       chatboxStyle,
