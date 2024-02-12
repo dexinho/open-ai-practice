@@ -1,55 +1,63 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
+import "../../index.css";
 import "../Chatbox/css/ChatboxOptions.css";
 
 export const ChatboxOptions = ({ onSelectionSave }) => {
   const [chatboxStyle, setChatboxStyle] = useState("default");
   const [usernameInput, setUsernameInput] = useState("");
-  const [isChatboxDialogVisible, setIsChatboxDialogVisible] = useState(false);
+  const [isChatboxDialogOpen, setIsChatboxDialogOpen] = useState(false);
+  const [isCustomSelected, setIsCustomSelected] = useState(false);
   const chatboxDialogRef = useRef(null);
 
   const handleSelectChange = (e) => {
-    setChatboxStyle(e.target.value);
+    console.log(e.target.value);
+    if (e.target.value !== "Custom") {
+      setIsCustomSelected(false);
+      setChatboxStyle(e.target.value);
+    } else setIsCustomSelected(true);
   };
 
   const handleUsernameInputChange = (e) => {
-    setUsernameInput();
+    setUsernameInput(e.target.value);
   };
 
   const handleSelectionSave = () => {
     onSelectionSave({
       username: usernameInput,
-      chatboxSelection: chatboxStyle,
+      chatboxStyle: chatboxStyle,
     });
 
-    setIsChatboxDialogVisible(false);
+    setIsChatboxDialogOpen(false);
   };
 
   const handleChatboxSettings = () => {
-    chatboxDialogRef.current.show();
-    setIsChatboxDialogVisible(true);
+    setIsChatboxDialogOpen(true);
   };
 
   useEffect(() => {
     const handleClickOutsideOfDialog = (e) => {
       if (
-        !isChatboxDialogVisible &&
         chatboxDialogRef.current &&
         !chatboxDialogRef.current.contains(e.target)
       ) {
-        setIsChatboxDialogVisible(false);
-        chatboxDialogRef.current.close();
+        setIsChatboxDialogOpen(false);
       }
     };
 
-    document.addEventListener("click", handleClickOutsideOfDialog);
+    if (isChatboxDialogOpen) {
+      document.addEventListener("mousedown", handleClickOutsideOfDialog);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutsideOfDialog);
+    }
 
     return () => {
-      document.removeEventListener("click", handleClickOutsideOfDialog);
-      setIsChatboxDialogVisible(false);
+      document.removeEventListener("mousedown", handleClickOutsideOfDialog);
     };
-  }, [isChatboxDialogVisible]);
+  }, [isChatboxDialogOpen]);
+
+  const handleCustomInputChange = (e) => setChatboxStyle(e.target.value);
 
   return (
     <div className="chatbox-selection-holder">
@@ -59,7 +67,11 @@ export const ChatboxOptions = ({ onSelectionSave }) => {
       >
         <FontAwesomeIcon icon={faGear} />
       </div>
-      <dialog ref={chatboxDialogRef} className="chatbox-selection-dialog">
+      <dialog
+        ref={chatboxDialogRef}
+        className="chatbox-selection-dialog"
+        open={isChatboxDialogOpen}
+      >
         <div className="chatbox-options-holder">
           <input
             type="text"
@@ -73,6 +85,13 @@ export const ChatboxOptions = ({ onSelectionSave }) => {
             <option>Philosopher</option>
             <option>Custom</option>
           </select>
+          {isCustomSelected && (
+            <input
+              type="text"
+              onChange={handleCustomInputChange}
+              placeholder="custom ai style..."
+            />
+          )}
           <button onClick={handleSelectionSave}>SAVE</button>
         </div>
       </dialog>
