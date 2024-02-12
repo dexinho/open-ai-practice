@@ -1,9 +1,9 @@
-export const fetchContent = async ({systemContent, userContent}) => {
+export const fetchContent = async ({systemContent, userContent, messagesHistory}) => {
   console.log({ systemContent, userContent })
   try {
     const fetchResponse = await fetch(`http://localhost:3000/open-ai`, {
       method: "POST",
-      body: JSON.stringify({ systemContent, userContent }),
+      body: JSON.stringify({ systemContent, userContent, messagesHistory }),
       headers: {
         "Content-Type": "application/json",
       },
