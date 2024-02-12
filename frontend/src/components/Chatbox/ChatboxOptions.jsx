@@ -73,6 +73,7 @@ export const ChatboxOptions = ({ onSelectionSave }) => {
         open={isChatboxDialogOpen}
       >
         <div className="chatbox-options-holder">
+          <h1>SETTINGS</h1>
           <input
             type="text"
             placeholder="your name..."
