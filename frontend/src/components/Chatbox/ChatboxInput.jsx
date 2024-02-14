@@ -30,11 +30,11 @@ export const ChatboxInput = ({ onInputSend }) => {
         className="chatbox-textarea"
         ref={textAreaRef}
         type="text"
+        rows={1}
+        cols={1}
         onChange={handleInputChange}
         value={textArea}
         onKeyDown={handleInputSend}
-        rows={1}
-        cols={1}
       ></textarea>
       <button className="chatbox-button" onClick={handleInputSend}>
         <FontAwesomeIcon icon={faPaperPlane} />
