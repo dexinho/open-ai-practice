@@ -17,18 +17,21 @@ export const Chatbox = () => {
   const handleInputSend = async (input) => {
     if (isLoading) return;
 
-    const userMessage = { role: "user", content: input }
+    const userMessage = { role: "user", content: input };
     setChatMessages((prevM) => [...prevM, userMessage]);
 
     try {
-      setIsLoading(true);
+      setIsLoading((prevS) => {
+        console.log(prevS);
+        return true;
+      });
       const content = await fetchContent({
         userContent: input,
         systemContent: chatbotOptions,
         messagesHistory: chatMessages,
       });
 
-      const systemMessage = { role: "system", content }
+      const systemMessage = { role: "system", content };
       setChatMessages((prevM) => [...prevM, systemMessage]);
     } catch (err) {
     } finally {
@@ -37,7 +40,7 @@ export const Chatbox = () => {
   };
 
   const handleSelectionSave = ({ username, chatboxStyle }) => {
-    console.log(username, chatboxStyle)
+    console.log(username, chatboxStyle);
     setChatbotOptions({
       username,
       chatboxStyle,
