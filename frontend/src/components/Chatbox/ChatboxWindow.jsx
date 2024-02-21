@@ -32,14 +32,12 @@ export const ChatboxWindow = ({ messages, isLoading }) => {
               />
             </div>
             <div className="chatbox-message">
-              {
-                <ChatboxMessage
-                  message={message.content}
-                  isLastMessage={
-                    messages.length % 2 === 0 && messages.length === index + 1
-                  }
-                />
-              }
+              <ChatboxMessage
+                message={message.content}
+                isLastMessage={
+                  messages.length % 2 === 0 && messages.length === index + 1
+                }
+              />
             </div>
           </div>
         ))}
